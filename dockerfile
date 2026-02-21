@@ -1,1 +1,16 @@
+#base image for the linux 
+FROM nginx:alpine 
+
+#remove the older config 
+RUN rm /etc/nginx/conf.d/default.conf
+
+#copy the config to nginx.conf location 
+COPY nginx.conf /etc/nginx/nginx.conf
+
+#copy the conf.d 
+COPY conf.d /etc/nginx/conf.d/
+
+#expose the port 80 and 443
+EXPOSE 80 443
+
 
