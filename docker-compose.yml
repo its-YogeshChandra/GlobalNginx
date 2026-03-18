@@ -9,33 +9,49 @@ services:
    networks: 
     - app-network
 
-courseselling_frontend:
- build: 
-  context: 
-  dockerfile : Dockerfile
- expose: 
-  - "3000"
- networks: 
-  - app-network
+  courseselling_frontend:
+   build: 
+    context: 
+    dockerfile : Dockerfile
+   expose: 
+    - "3000"
+   networks: 
+    - app-network
 
  #for the streamweaver application 
- streamweaver_backend:
-  build: 
-   context: #relative path to the repo
-   dockerfile: Dockerfile
-  expose: 
-   - "8080"
-  networks: 
-   - app-network
+  streamweaver_backend:
+   build: 
+    context: #relative path to the repo
+    dockerfile: Dockerfile
+   expose: 
+    - "8080"
+   networks: 
+    - app-network
 
-streamweaver_frontend:
- build: 
-  context: 
-  dockerfile: Dockerfile
- expose: 
-  - "3000"
- networks: 
-  - app-network
+#for streamweaver frontend 
+  streamweaver_frontend:
+   build: 
+    context: #relative path to the repo 
+    dockerfile: Dockerfile
+   expose: 
+    - "3000"
+   networks: 
+    - app-network
+
+#for global nginx conf
+  nginx:
+   build : ./nginx
+   ports: 
+    - "80:80"
+    - "443:443"
+   depends_on:
+    - courseselling_backend
+    - courseselling_frontend
+    - streamweaver_backend
+    - streamweaver_frontend
+   networks: 
+    - app-network
+   restart: unless-stopped
 
 #list all the networks available in the system
 networks:
