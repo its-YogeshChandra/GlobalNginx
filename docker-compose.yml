@@ -1,13 +1,5 @@
+#list all the services available in the system
 services:
-  courseselling_app_frontend;
-    build:
-     context: #relative path to the repo 
-     dockerfile: Dockerfile
-    expose:
-     - "80"
-    networks:
-     - app-network
-
   courseselling_backend:
    build: 
     context: #relative path to the repo 
@@ -17,4 +9,35 @@ services:
    networks: 
     - app-network
 
-  
+courseselling_frontend:
+ build: 
+  context: 
+  dockerfile : Dockerfile
+ expose: 
+  - "3000"
+ networks: 
+  - app-network
+
+ #for the streamweaver application 
+ streamweaver_backend:
+  build: 
+   context: #relative path to the repo
+   dockerfile: Dockerfile
+  expose: 
+   - "8080"
+  networks: 
+   - app-network
+
+streamweaver_frontend:
+ build: 
+  context: 
+  dockerfile: Dockerfile
+ expose: 
+  - "3000"
+ networks: 
+  - app-network
+
+#list all the networks available in the system
+networks:
+ app-network:
+  driver: bridge
