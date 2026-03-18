@@ -4,6 +4,8 @@ services:
    build: 
     context: ${COURSESELLING_BACKEND_PATH} #relative path to the repo 
     dockerfile: Dockerfile 
+   env_file: 
+    - ${COURSESELLING_BACKEND_PATH}/.env
    expose:
     - "8080"
    networks: 
@@ -13,6 +15,8 @@ services:
    build: 
     context: ${COURSESELLING_FRONTEND_PATH} #relative path to the repo 
     dockerfile : Dockerfile
+   env_file: 
+    - ${COURSESELLING_FRONTEND_PATH}/.env
    expose: 
     - "3000"
    networks: 
@@ -23,6 +27,8 @@ services:
    build: 
     context: ${STREAMWEAVER_BACKEND_PATH} #relative path to the repo
     dockerfile: Dockerfile
+   env_file: 
+    - ${STREAMWEAVER_BACKEND_PATH}/.env
    expose: 
     - "9000"
    networks: 
@@ -33,6 +39,8 @@ services:
    build: 
     context: ${STREAMWEAVER_FRONTEND_PATH} #relative path to the repo 
     dockerfile: Dockerfile
+   env_file: 
+    - ${STREAMWEAVER_FRONTEND_PATH}/.env
    expose: 
     - "4000"
    networks: 
