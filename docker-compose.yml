@@ -1,71 +1,23 @@
-#list all the services available in the system
 services:
-  courseselling_backend:
-   build: 
-    context: ${COURSESELLING_BACKEND_PATH} #relative path to the repo 
-    dockerfile: Dockerfile 
-   env_file: 
-    - ${COURSESELLING_BACKEND_PATH}/.env
-   expose:
-    - "8080"
-   networks: 
-    - app-network
-
-  courseselling_frontend:
-   build: 
-    context: ${COURSESELLING_FRONTEND_PATH} #relative path to the repo 
-    dockerfile : Dockerfile
-   env_file: 
-    - ${COURSESELLING_FRONTEND_PATH}/.env
-   expose: 
-    - "3000"
-   networks: 
-    - app-network
-
- #for the streamweaver application 
-  streamweaver_backend:
-   build: 
-    context: ${STREAMWEAVER_BACKEND_PATH} #relative path to the repo
-    dockerfile: Dockerfile
-   env_file: 
-    - ${STREAMWEAVER_BACKEND_PATH}/.env
-   expose: 
-    - "9000"
-   networks: 
-    - app-network
-
-#for streamweaver frontend 
-  streamweaver_frontend:
-   build: 
-    context: ${STREAMWEAVER_FRONTEND_PATH} #relative path to the repo 
-    dockerfile: Dockerfile
-   env_file: 
-    - ${STREAMWEAVER_FRONTEND_PATH}/.env
-   expose: 
-    - "4000"
-   networks: 
-    - app-network
-
-#for global nginx conf
+  # global nginx reverse proxy
+  # receives HTTP from cloud VPS via WireGuard tunnel
   nginx:
-   build : ./nginx
-   ports: 
-    - "80:80"
-    - "443:443"
+    build: ./nginx
+    container_name: global_nginx
+    ports:
+      - "10.66.66.3:80:80"
 
-   volumes : 
-    - /etc/letsencrypt:/etc/letsencrypt:ro  #mount host certs, read-only 
+    # nginx must join every project's network to reach their containers
+    networks:
+      - courseselling-network
+      - streamweaver-network
 
-   depends_on:
-    - courseselling_backend
-    - courseselling_frontend
-    - streamweaver_backend
-    - streamweaver_frontend
-   networks: 
-    - app-network
-   restart: unless-stopped
+    restart: unless-stopped
 
-#list all the networks available in the system
+# each project creates its own podman network
+# declare them as external so nginx can join them
 networks:
- app-network:
-  driver: bridge
+  courseselling-network:
+    external: true
+  streamweaver-network:
+    external: true
