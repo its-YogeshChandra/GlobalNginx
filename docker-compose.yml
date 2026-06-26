@@ -18,6 +18,8 @@ services:
 # declare them as external so nginx can join them
 networks:
   courseselling-network:
+    name: coursesellingapp-docker_courseselling
     external: true
   streamweaver-network:
+    name: streamweaverv2_default
     external: true
