@@ -25,5 +25,5 @@ networks:
     name: streamweaverv2_default
     external: true
   amipay-network:
-    name: amipay_network
+    name: amipay_default
     external: true
